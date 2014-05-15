@@ -73,7 +73,7 @@ activity.noNA$date <- as.Date(activity.noNA$date)  # convert 'activity.noNA$date
 For this part of the assignment, you can ignore the missing values in the dataset.
 
 ```r
-str(activity.noNA)  # check structure and display number of columns dropped
+str(activity.noNA)  # check structure and display new dimensions
 ```
 
 ```
