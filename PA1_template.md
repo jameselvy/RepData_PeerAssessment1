@@ -46,7 +46,13 @@ options(scipen = 999)  # disable scientific notation
 Load the data
 
 ```r
-activity <- read.csv("activity.csv")
+## create rawData directory and unzip rawdata
+if (!file.exists("./rawData/activity.csv")) {
+    unzip("./activity.zip", exdir = "./rawData")
+}
+
+## load activty.csv
+activity <- read.csv("./rawData/activity.csv")
 str(activity)
 summary(activity)
 ```
@@ -55,7 +61,10 @@ summary(activity)
 Process/transform the data (if necessary) into a format suitable for analysis
 
 ```r
-activity$date <- as.Date(activity$date)
+## create dataframe with missing values removed
+activity.noNA <- na.omit(activity)  # drop NA values and save to new data.frame
+rownames(activity.noNA) <- NULL  # remove row names
+activity.noNA$date <- as.Date(activity.noNA$date)  # convert 'activity.noNA$date' to date object
 ```
 
 
@@ -64,10 +73,30 @@ activity$date <- as.Date(activity$date)
 For this part of the assignment, you can ignore the missing values in the dataset.
 
 ```r
-activity.noNA <- na.omit(activity)  # drop na values and save to new data.frame
-rownames(activity.noNA) <- NULL  # remove row names
 str(activity.noNA)  # check structure and display number of columns dropped
+```
+
+```
+## 'data.frame':	15264 obs. of  3 variables:
+##  $ steps   : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ date    : Date, format: "2012-10-02" "2012-10-02" ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  - attr(*, "na.action")=Class 'omit'  Named int [1:2304] 1 2 3 4 5 6 7 8 9 10 ...
+##   .. ..- attr(*, "names")= chr [1:2304] "1" "2" "3" "4" ...
+```
+
+```r
 summary(activity.noNA)  # check NA's removed
+```
+
+```
+##      steps            date               interval   
+##  Min.   :  0.0   Min.   :2012-10-02   Min.   :   0  
+##  1st Qu.:  0.0   1st Qu.:2012-10-16   1st Qu.: 589  
+##  Median :  0.0   Median :2012-10-29   Median :1178  
+##  Mean   : 37.4   Mean   :2012-10-30   Mean   :1178  
+##  3rd Qu.: 12.0   3rd Qu.:2012-11-16   3rd Qu.:1766  
+##  Max.   :806.0   Max.   :2012-11-29   Max.   :2355
 ```
 
 
@@ -187,10 +216,17 @@ Create a new dataset that is equal to the original dataset but with the missing 
 ## script executes If raw data changes, uncomment imputation script and
 ## re-run script
 
-# install.packages('mice') library(mice) activity.imputed <-
-# complete(mice(activity)) summary(activity.imputed)
-# write.csv(activity.imputed, file = 'imputed.csv', row.names = FALSE)
-activity.imputed <- read.csv("imputed.csv")  # here is a cached copy of the imputed data
+## create procData directory and create imputed dataset
+if (!file.exists("./procData/imputed.csv")) {
+    dir.create("procData")
+    # install.packages('mice') # you need to install this library
+    library(mice)
+    activity.imputed <- complete(mice(activity))
+    write.csv(activity.imputed, file = "./procData/imputed.csv", row.names = FALSE)
+}
+
+## load cached imputed dataframe
+activity.imputed <- read.csv("./procData/imputed.csv")  # here is a cached copy of the imputed data
 summary(activity.imputed)
 ```
 
@@ -213,7 +249,7 @@ mean(tapply(activity.imputed$steps, activity.imputed$date, sum))  # mean total n
 ```
 
 ```
-## [1] 11532
+## [1] 11133
 ```
 
 ```r
@@ -246,7 +282,7 @@ diffPrint <- if (diffLogical == TRUE) {
 
 ```
 ## [1] "Do these values differ? Yes"
-## [1] "The mean has changed from 10766 to 11532 after the data was imputed"
+## [1] "The mean has changed from 10766 to 11133 after the data was imputed"
 ## [1] "The median has changed from 10765 to 11458 after the data was imputed"
 ```
 

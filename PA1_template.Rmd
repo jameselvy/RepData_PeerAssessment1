@@ -42,23 +42,30 @@ options(scipen=999) # disable scientific notation
 ### Loading and preprocessing the data
 
 Load the data
-```{r, echo=TRUE, results="hide"} 
-activity <- read.csv("activity.csv")
+```{r, echo=TRUE, results="hide"}
+## create rawData directory and unzip rawdata
+if (!file.exists("./rawData/activity.csv")) {
+  unzip("./activity.zip", exdir = "./rawData")
+}
+
+## load activty.csv
+activity <- read.csv("./rawData/activity.csv")
 str(activity)
 summary(activity)
 ```
 
 Process/transform the data (if necessary) into a format suitable for analysis
-```{r, echo=TRUE, results="hide"} 
-activity$date <- as.Date(activity$date)
+```{r, echo=TRUE, results="hide"}
+## create dataframe with missing values removed
+activity.noNA <- na.omit(activity)  # drop NA values and save to new data.frame
+rownames(activity.noNA) <- NULL              # remove row names
+activity.noNA$date <- as.Date(activity.noNA$date)      # convert 'activity.noNA$date' to date object
 ```
 
 ### What is mean total number of steps taken per day?
 
 For this part of the assignment, you can ignore the missing values in the dataset.
-```{r, echo=TRUE, results="hide"} 
-activity.noNA <- na.omit(activity)  # drop na values and save to new data.frame
-rownames(activity.noNA) <- NULL              # remove row names
+```{r, echo=TRUE} 
 str(activity.noNA)                  # check structure and display number of columns dropped
 summary(activity.noNA)              # check NA's removed
 ```
@@ -125,19 +132,24 @@ Devise a strategy for filling in all of the missing values in the dataset. The s
 ```
 
 Create a new dataset that is equal to the original dataset but with the missing data filled in.
-```{r, echo=TRUE, results="hide", message=FALSE}
+```{r, echo=TRUE, results="hide", message=TRUE}
 ## NOTE:
 ## The imputation process takes at least 15 minutes on my computer
 ## I saved the output to imputed.csv so don't have to regnerate each time 
 ## R script executes
 ## If raw data changes, uncomment imputation script and re-run script
 
-# install.packages("mice")
-# library(mice)
-# activity.imputed <- complete(mice(activity))
-# summary(activity.imputed)
-# write.csv(activity.imputed, file = "imputed.csv", row.names = FALSE)
-activity.imputed <- read.csv("imputed.csv") # here is a cached copy of the imputed data
+## create procData directory and create imputed dataset
+if (!file.exists("./procData/imputed.csv")) {
+  dir.create("procData")
+  # install.packages("mice")  # you need to install this library
+  library(mice)
+  activity.imputed <- complete(mice(activity))
+  write.csv(activity.imputed, file = "./procData/imputed.csv", row.names = FALSE) 
+}
+
+## load cached imputed dataframe
+activity.imputed <- read.csv("./procData/imputed.csv") # here is a cached copy of the imputed data
 summary(activity.imputed)
 ```
 
