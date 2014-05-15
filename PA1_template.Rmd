@@ -107,7 +107,7 @@ which.max(activity.noNA.cast$steps)  # index of 5-minute interval containing the
 activity.noNA.cast$steps[104] # check maximum number of steps looks ok by comparing with plot above
 activity.noNA.cast$interval[104] # report interval with maximum number of steps
 ```
-The 5-minute interval that contains the maximum number of steps is located at ow number (index) `r which.max(activity.noNA.cast$steps)` in the dataset and corresponds to label interval `r activity.noNA.cast$interval[104]`. This interval contains `r round(activity.noNA.cast$steps[104],0)` steps on average across all the days in the dataset.
+The 5-minute interval that contains the maximum number of steps is located at row number (index) `r which.max(activity.noNA.cast$steps)` in the dataset and corresponds to 'interval' `r activity.noNA.cast$interval[104]`. This interval contains `r round(activity.noNA.cast$steps[104],0)` steps on average across all the days in the dataset.
 
 ### Imputing missing values 
 
@@ -153,8 +153,6 @@ Calculate and report the **mean** and **median** total number of steps taken per
 mean(tapply(activity.imputed$steps, activity.imputed$date, sum)) # mean total number of steps taken per day
 median(tapply(activity.imputed$steps, activity.imputed$date, sum)) # median total number of steps taken per day
 ```
-Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
-
 
 Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
@@ -179,12 +177,14 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 ```{r, echo=TRUE, results = "hide", message=FALSE}
 ## create a new factor activity.imputed$weekday
+activity.imputed$weekday <- NULL
+#
 # define days which are weekdays
-#
 weekday <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
-# define days which are weekend days
 #
+# define days which are weekend days
 weekend <- c("Sunday", "Saturday")                                     
+#
 # transform date variable from factor to Date object
 activity.imputed$weekday <- weekdays(as.Date(activity.imputed$date))
 #
@@ -200,7 +200,6 @@ activity.imputed$weekday <- as.factor(activity.imputed$weekday)
 # check structure
 str(activity.imputed) 
 ```
-
 
 
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).

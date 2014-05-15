@@ -154,7 +154,7 @@ activity.noNA.cast$interval[104]  # report interval with maximum number of steps
 ## [1] 835
 ```
 
-The 5-minute interval that contains the maximum number of steps is located at ow number (index) 104 in the dataset and corresponds to label interval 835. This interval contains 206 steps on average across all the days in the dataset.
+The 5-minute interval that contains the maximum number of steps is located at row number (index) 104 in the dataset and corresponds to 'interval' 835. This interval contains 206 steps on average across all the days in the dataset.
 
 ### Imputing missing values 
 
@@ -224,8 +224,6 @@ median(tapply(activity.imputed$steps, activity.imputed$date, sum))  # median tot
 ## [1] 11458
 ```
 
-Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
-
 
 Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
@@ -263,8 +261,9 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 ```r
-## create a new factor activity.imputed$weekday define days which are
-## weekdays
+## create a new factor activity.imputed$weekday
+activity.imputed$weekday <- NULL
+# define days which are weekdays
 weekday <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 # define days which are weekend days
 weekend <- c("Sunday", "Saturday")
@@ -279,7 +278,6 @@ activity.imputed$weekday <- as.factor(activity.imputed$weekday)
 # check structure
 str(activity.imputed)
 ```
-
 
 
 

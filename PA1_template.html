@@ -309,7 +309,7 @@ with(activity.noNA.cast, plot(interval, steps, type = &quot;l&quot;, main = &quo
 <pre><code>## [1] 835
 </code></pre>
 
-<p>The 5-minute interval that contains the maximum number of steps is located at ow number (index) 104 in the dataset and corresponds to label interval 835. This interval contains 206 steps on average across all the days in the dataset.</p>
+<p>The 5-minute interval that contains the maximum number of steps is located at row number (index) 104 in the dataset and corresponds to &#39;interval&#39; 835. This interval contains 206 steps on average across all the days in the dataset.</p>
 
 <h3>Imputing missing values</h3>
 
@@ -367,8 +367,6 @@ summary(activity.imputed)
 
 <p>Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?</p>
 
-<p>Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?</p>
-
 <pre><code class="r">diffLogical &lt;- mean(tapply(activity.noNA$steps, activity.noNA$date, sum)) == 
     mean(tapply(activity.imputed$steps, activity.imputed$date, sum))
 diffPrint &lt;- if (diffLogical == TRUE) {
@@ -397,8 +395,9 @@ diffPrint &lt;- if (diffLogical == TRUE) {
 
 <p>Create a new factor variable in the dataset with two levels - &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo; indicating whether a given date is a weekday or weekend day.</p>
 
-<pre><code class="r">## create a new factor activity.imputed$weekday define days which are
-## weekdays
+<pre><code class="r">## create a new factor activity.imputed$weekday
+activity.imputed$weekday &lt;- NULL
+# define days which are weekdays
 weekday &lt;- c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;)
 # define days which are weekend days
 weekend &lt;- c(&quot;Sunday&quot;, &quot;Saturday&quot;)
