@@ -203,8 +203,10 @@ nrow(activity) - nrow(na.omit(activity))  # report the number of rows with NAs
 Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 ```r
-# strategy is to use the library MICE for multiple imputations this is
-# probably the easiest way
+## my strategy is to use the MICE package for imputation MICE: Multivariate
+## Imputation by Chained Equations in R
+## http://www.stefvanbuuren.nl/publications/MICE%20in%20R%20-%20Draft.pdf
+## mice is easy and effective to use
 ```
 
 
